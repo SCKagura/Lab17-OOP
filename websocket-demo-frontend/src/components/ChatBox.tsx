@@ -11,6 +11,7 @@ export default function ChatBox() {
     const [typedMessage, setTypedMessage] = useState<string>("")
     const username = useAppSelector(selectUsername)
     const webSocketState = useAppSelector(selectWebSocket)
+    let UserCount = 0;
     return (
         <>
             <div className="bg-white w-full rounded-lg shadow-lg p-4">
@@ -18,7 +19,16 @@ export default function ChatBox() {
                     <h1 className="text-3xl font-extrabold text-gray-800">Group Chat</h1>
                     <p className="text-gray-600">Welcome to the chat room!</p>
                     <p>
-                        Online persons : <strong>fix me pls</strong>
+                        {
+                            webSocketState.messages?.map((message) => {
+                                if (message.type === messageType.JOIN || message.type === messageType.LEAVE) {
+                                    UserCount = message.countUser;
+                                } 
+                                return "";
+                        })
+                        }
+                
+                        Online persons : <strong>{UserCount}</strong>
                     </p>
                 </div>
 
@@ -27,7 +37,8 @@ export default function ChatBox() {
                         webSocketState.messages?.map((message, index) => {
                             return (
                                 message.type === messageType.JOIN || message.type === messageType.LEAVE ? (
-                                    <JoinLeaveMessage sender={message.sender} messageType={message.type} key={index} timestamp={message.timestamp}/>
+                                    <JoinLeaveMessage sender={message.sender} messageType={message.type} key={index} timestamp={message.timestamp} />
+            
                                     ):(
                                     <Chat key={index} content={message.content} sender={message.sender} isMe={username === message.sender} timestamp={message.timestamp}/>
                                 )

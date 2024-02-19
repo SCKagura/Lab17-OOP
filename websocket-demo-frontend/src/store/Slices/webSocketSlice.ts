@@ -12,6 +12,7 @@ interface webSocketMessage {
     content: string;
     timestamp: string;
     type: messageType;
+    countUser: number;
 }
 interface webSocketState {
     isConnected: boolean;
